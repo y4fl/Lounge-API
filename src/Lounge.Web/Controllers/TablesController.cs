@@ -79,8 +79,8 @@ namespace Lounge.Web.Controllers
         [HttpPost("create")]
         public async Task<ActionResult<TableDetailsViewModel>> Create(NewTableViewModel vm, bool squadQueue = false)
         {
-            if (vm.Scores.Count != 12)
-                return BadRequest("Must supply 12 scores");
+            if (vm.Scores.Count != 8)
+                return BadRequest("Must supply 8 scores");
 
             var playerNames = vm.Scores.Select(s => s.PlayerName).ToHashSet();
             var normalizedPlayerNames = playerNames.Select(PlayerUtils.NormalizeName).ToHashSet();
@@ -99,10 +99,10 @@ namespace Lounge.Web.Controllers
             var playerCountryCodeLookup = players.ToDictionary(p => p.Name, p => p.CountryCode);
 
             int numTeams = vm.Scores.Max(s => s.Team) + 1;
-            if (numTeams is not (2 or 3 or 4 or 6 or 12))
+            if (numTeams is not (2 or 4 or 8))
                 return BadRequest("Invalid number of teams");
 
-            int playersPerTeam = 12 / numTeams;
+            int playersPerTeam = 8 / numTeams;
 
             var tableScores = new List<TableScore>();
             foreach (var score in vm.Scores)

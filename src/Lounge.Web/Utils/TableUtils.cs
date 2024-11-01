@@ -251,11 +251,9 @@ namespace Lounge.Web.Utils
 
         public static string? FormatDisplay(int numTeams) => numTeams switch
         {
-            2 => "6v6",
-            3 => "4v4",
-            4 => "3v3",
-            6 => "2v2",
-            12 => "FFA",
+            2 => "4v4",
+            4 => "2v2",
+            8 => "FFA",
             int n => null,
         };
     }
