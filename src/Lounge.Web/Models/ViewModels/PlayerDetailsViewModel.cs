@@ -11,7 +11,7 @@ namespace Lounge.Web.Models.ViewModels
 
         public required string Name { get; init; }
 
-        public int MkcId { get; init; }
+        public int? MkcId { get; init; }
 
         public int? RegistryId { get; init; }
 

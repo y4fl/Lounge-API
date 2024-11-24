@@ -131,7 +131,7 @@ namespace Lounge.Web.Controllers
 
                             var scores = new (string Player, int Score, int CurrentMmr, double Multiplier)[numTeams][];
                             for (int i = 0; i < numTeams; i++)
-                                scores[i] = tableScoreMap[table.Id].Where(score => score.Team == i).Select(s => (s.PlayerId.ToString(), s.Score, playerMmrs.GetValueOrDefault(s.PlayerId, s.PrevMmr!.Value), sqMultiplier * s.Multiplier)).ToArray();
+                                scores[i] = tableScoreMap[table.Id].Where(score => score.Team == i).Select(s => (s.PlayerId.ToString(), s.Score1 + s.Score2 + s.Score3, playerMmrs.GetValueOrDefault(s.PlayerId, s.PrevMmr!.Value), sqMultiplier * s.Multiplier)).ToArray();
 
                             var mmrDeltas = TableUtils.GetMMRDeltas(scores);
                             foreach (var score in tableScoreMap[table.Id])

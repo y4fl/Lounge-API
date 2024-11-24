@@ -12,19 +12,20 @@ namespace Lounge.Web.Utils
 {
     public static class TableUtils
     {
-        private static readonly int[] caps = new[] { 60, 120, 180, 240, -1, 300 };
-        private static readonly int[] scalingFactors = new[] { 9500, 5500, 5100, 4800, -1, 4650 };
-        private static readonly double[] offsets = new[] { 2746.116, 1589.856, 1474.230, 1387.511, -1, 1344.151 };
+        private static readonly int[] caps = new[] { 85, 180, 180, 340, -1, 300 };
+        private static readonly int[] scalingFactors = new[] { 9500, 5100, 5100, 5000, -1, 4650 };
+        private static readonly double[] offsets = new[] { 2696.281, 1474.230, 1474.230, 1263.891, -1, 1344.151 };
 
-        public static string BuildUrl(string tier, (string Player, string? CountryCode, int Score)[][] scores)
+        public static string BuildUrl(string tier, (string Player, string? CountryCode, List<int> Score)[][] scores, DateTime date)
         {
             int numTeams = scores.Length;
             int playersPerTeam = scores[0].Length;
 
-            int[] teamTotalScores = scores.Select(t => t.Sum(s => s.Score)).ToArray();
+            int[] teamTotalScores = scores.Select(t => t.Sum(s => s.Score.Sum())).ToArray();
             int[] places = GetPlaces(teamTotalScores);
 
             var tableData = new StringBuilder();
+            tableData.Append($"#date {date:yyyy-MM-dd}\n");
 
             string format = playersPerTeam == 1 ? "FFA" : $"{playersPerTeam}v{playersPerTeam}";
             tableData.Append($"#title Tier {tier.ToUpper()} {format}\n");
@@ -39,8 +40,8 @@ namespace Lounge.Web.Utils
 
                 for (int j = 0; j < playersPerTeam; j++)
                 {
-                    (string player, string? countryCode, int score) = scores[i][j];
-                    tableData.Append($"{player} [{countryCode ?? string.Empty}] {score}\n");
+                    (string player, string? countryCode, List<int> score) = scores[i][j];
+                    tableData.Append($"{player} [{countryCode ?? string.Empty}] {string.Join('|', score)}\n");
                 }
             }
 
@@ -170,7 +171,9 @@ namespace Lounge.Web.Utils
                 Season = t.Season,
                 Scores = t.Scores.Select(s => new TableScore
                 {
-                    Score = s.Score,
+                    Score1 = s.Score1,
+                    Score2 = s.Score2,
+                    Score3 = s.Score3,
                     Multiplier = s.Multiplier,
                     NewMmr = s.NewMmr,
                     PrevMmr = t.VerifiedOn == null && t.DeletedOn == null
@@ -193,16 +196,16 @@ namespace Lounge.Web.Utils
             int prevRank = 1;
             foreach (var team in table.Scores
                 .GroupBy(s => s.Team)
-                .OrderByDescending(t => t.Sum(t => t.Score)))
+                .OrderByDescending(t => t.Sum(t => t.Score1 + t.Score2 + t.Score3)))
             {
-                int totalScore = team.Sum(t => t.Score);
+                int totalScore = team.Sum(t => t.Score1 + t.Score2 + t.Score3);
 
                 var scores = new List<TableDetailsViewModel.TableScore>();
                 foreach (var score in team)
                 {
                     scores.Add(new TableDetailsViewModel.TableScore(
-                        score.Score,
-                        formatMultiplier * score.Multiplier,
+                        score.Score1 + score.Score2 + score.Score3,
+                                    formatMultiplier * score.Multiplier,
                         score.PrevMmr,
                         score.NewMmr,
                         score.PlayerId,

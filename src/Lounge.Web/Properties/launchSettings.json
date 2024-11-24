@@ -13,7 +13,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://0.0.0.0:80;http://www.mk7-lounge.com:80",
+      "applicationUrl": "http://0.0.0.0:5000;http://www.mk7-lounge.com:5000",
       "dotnetRunMessages": "true"
     },
     "Profile 1": {

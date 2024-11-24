@@ -110,30 +110,32 @@ namespace Lounge.Web.Controllers
                 tableScores.Add(new TableScore
                 {
                     PlayerId = playerIdLookup[score.PlayerName],
-                    Score = score.Score,
+                    Score1 = score.Scores[0],
+                    Score2 = score.Scores[1],
+                    Score3 = score.Scores[2],
                     Team = score.Team,
                     Multiplier = score.Multiplier
                 });
             }
-
-            var scores = new (string Player, string? CountryCode, int Score)[numTeams][];
+            var createdOn = vm.Date ?? DateTime.UtcNow;
+            var scores = new (string Player, string? CountryCode, List<int> Score)[numTeams][];
             for (int i = 0; i < numTeams; i++)
             {
                 scores[i] = vm.Scores
                     .Where(score => score.Team == i)
-                    .Select(score => (score.PlayerName, playerCountryCodeLookup[score.PlayerName] , score.Score))
+                    .Select(score => (score.PlayerName, playerCountryCodeLookup[score.PlayerName], score.Scores))
                     .ToArray();
 
                 if (scores[i].Length != playersPerTeam)
                     return BadRequest($"Invalid number of players on team {i}: got {scores[i].Length}, expected {playersPerTeam}");
             }
 
-            string tableUrl = TableUtils.BuildUrl(vm.Tier, scores);
+            string tableUrl = TableUtils.BuildUrl(vm.Tier, scores, createdOn);
             var tableImage = await TableUtils.GetImageDataAsync(tableUrl);
 
             var table = new Table
             {
-                CreatedOn = DateTime.UtcNow,
+                CreatedOn = createdOn,
                 NumTeams = numTeams,
                 Tier = vm.Tier,
                 Scores = tableScores,
@@ -186,7 +188,7 @@ namespace Lounge.Web.Controllers
         }
 
         [HttpPost("setScores")]
-        public async Task<IActionResult> SetScores(int tableId, [FromBody] Dictionary<string, int> scores)
+        public async Task<IActionResult> SetScores(int tableId, [FromBody] Dictionary<string, int[]> scores)
         {
             var table = await _context.Tables
                 .Include(t => t.Scores)
@@ -202,7 +204,7 @@ namespace Lounge.Web.Controllers
                 teamRanks = ScoresToRanks(table.Scores);
             }
 
-            foreach ((string name, int score) in scores)
+            foreach ((string name, int[] score) in scores)
             {
                 bool foundPlayer = false;
                 foreach (var tableScore in table.Scores)
@@ -210,7 +212,9 @@ namespace Lounge.Web.Controllers
                     if (PlayerUtils.NormalizeName(name) == tableScore.Player.NormalizedName)
                     {
                         foundPlayer = true;
-                        tableScore.Score = score;
+                        tableScore.Score1 = score[0];
+                        tableScore.Score2 = score[1];
+                        tableScore.Score3 = score[2];
                         break;
                     }
                 }
@@ -230,16 +234,16 @@ namespace Lounge.Web.Controllers
             }
 
             int numTeams = table.NumTeams;
-            var newScores = new (string Player, string? CountryCode, int Score)[numTeams][];
+            var newScores = new (string Player, string? CountryCode, List<int> Score)[numTeams][];
             for (int i = 0; i < numTeams; i++)
             {
                 newScores[i] = table.Scores
                     .Where(score => score.Team == i)
-                    .Select(score => (score.Player.Name, score.Player.CountryCode, score.Score))
+                    .Select(score => (score.Player.Name, score.Player.CountryCode, new List<int> { score.Score1, score.Score2, score.Score3 }))
                     .ToArray();
             }
 
-            string tableUrl = TableUtils.BuildUrl(table.Tier, newScores);
+            string tableUrl = TableUtils.BuildUrl(table.Tier, newScores, table.CreatedOn);
             var tableImage = await TableUtils.GetImageDataAsync(tableUrl);
 
             await _tableImageService.UploadTableImageAsync(tableId, tableImage);
@@ -253,9 +257,9 @@ namespace Lounge.Web.Controllers
                 int prevRank = 0;
                 int prevScore = -1;
                 int[] teamOrder = new int[scores.Select(s => s.Team).Max() + 1];
-                foreach (var team in scores.GroupBy(s => s.Team).OrderByDescending(g => g.Sum(s => s.Score)))
+                foreach (var team in scores.GroupBy(s => s.Team).OrderByDescending(g => g.Sum(s => s.Score1 + s.Score2 + s.Score3)))
                 {
-                    var score = team.Sum(s => s.Score);
+                    var score = team.Sum(s => s.Score1 + s.Score2 + s.Score3);
                     prevRank = teamOrder[team.Key] = score == prevScore ? prevRank : rank;
                     prevScore = score;
                     rank++;
@@ -334,7 +338,7 @@ namespace Lounge.Web.Controllers
             {
                 scores[i] = table.Scores
                     .Where(score => score.Team == i)
-                    .Select(s => (s.Player.Name, s.Score, seasonDataLookup[s.PlayerId]!.Mmr, formatMultiplier * s.Multiplier))
+                    .Select(s => (s.Player.Name, s.Score1 + s.Score2 + s.Score3, seasonDataLookup[s.PlayerId]!.Mmr, formatMultiplier * s.Multiplier))
                     .ToArray();
             }
 

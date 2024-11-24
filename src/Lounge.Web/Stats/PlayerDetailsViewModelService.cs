@@ -61,7 +61,7 @@ namespace Lounge.Web.Stats
                 int numTeams = table.NumTeams;
                 int[] teamTotals = new int[table.NumTeams];
                 foreach (var score in tableScores.Values)
-                    teamTotals[score.Team] += score.Score;
+                    teamTotals[score.Team] += score.Score1 + score.Score2 + score.Score3;
 
                 int playerTeamTotal = teamTotals[tableScore.Team];
                 Array.Sort(teamTotals);
@@ -74,7 +74,7 @@ namespace Lounge.Web.Stats
                 {
                     if (score.Team == tableScore.Team && score.PlayerId != playerId)
                     {
-                        partnerScores.Add(score.Score);
+                        partnerScores.Add(score.Score1 + score.Score2 + score.Score3);
                         partnerIds.Add(score.PlayerId);
                     }
                 }
@@ -85,7 +85,7 @@ namespace Lounge.Web.Stats
                     mmrDelta: delta,
                     reason: PlayerDetailsViewModel.MmrChangeReason.Table,
                     time: table.VerifiedOn!.Value,
-                    score: tableScore.Score,
+                    score: tableScore.Score1 + tableScore.Score2 + tableScore.Score3,
                     partnerScores: partnerScores,
                     partnerIds: partnerIds,
                     rank: rank,

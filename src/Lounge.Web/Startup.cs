@@ -12,13 +12,17 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net.Http;
 using System.Text.Json.Serialization;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace Lounge.Web
 {
@@ -95,6 +99,7 @@ namespace Lounge.Web
 
             services.AddHostedService<MkcRegistrySyncBackgroundService>();
             services.AddHostedService<DbChangeTrackingBackgroundService>();
+            services.AddHostedService<LifetimeBackgroundService>();
 
             services.Configure<LoungeSettings>(Configuration);
             services.AddHttpClient("WithRedirects").ConfigurePrimaryHttpMessageHandler(() =>
@@ -102,11 +107,11 @@ namespace Lounge.Web
                 {
                     ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
                 });
-            services.AddHttpClient("NoRedirects").ConfigurePrimaryHttpMessageHandler(() => 
-                new HttpClientHandler() 
-                { 
-                    AllowAutoRedirect = false, 
-                    ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator 
+            services.AddHttpClient("NoRedirects").ConfigurePrimaryHttpMessageHandler(() =>
+                new HttpClientHandler()
+                {
+                    AllowAutoRedirect = false,
+                    ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
                 });
 
             services.AddLocalization(options => options.ResourcesPath = "Resources");
@@ -116,7 +121,7 @@ namespace Lounge.Web
 
             services.Configure<RequestLocalizationOptions>(options =>
             {
-                var cultures = new CultureInfo[] { new("en"), new("ja"), new("fr"), new("de"), new("es"), new("it") };
+                var cultures = new CultureInfo[] { new("en"), new("ja"), new("fr") };
                 options.DefaultRequestCulture = new RequestCulture("en");
                 options.SupportedCultures = cultures;
                 options.SupportedUICultures = cultures;
@@ -133,8 +138,11 @@ namespace Lounge.Web
             }
             else
             {
+             
                 app.UseExceptionHandler("/error");
                 app.UseHsts();
+                app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "Lounge_API v1"));
+
             }
 
             app.UseSwagger();
@@ -164,6 +172,45 @@ namespace Lounge.Web
                 endpoints.MapRazorPages();
                 endpoints.MapControllers();
             });
+        }
+    }
+
+    public class LifetimeBackgroundService : BackgroundService
+    {
+        private readonly ILogger<LifetimeBackgroundService> _logger;
+
+        public LifetimeBackgroundService(ILogger<LifetimeBackgroundService> logger)
+        {
+            _logger = logger;
+        }
+
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            try
+            {
+                while (!stoppingToken.IsCancellationRequested)
+                {
+                    _logger.LogInformation("Service running at: {Time}", DateTimeOffset.Now);
+                    await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                // Normal shutdown, don't throw
+                _logger.LogInformation("Service is shutting down");
+            }
+        }
+
+        public override async Task StartAsync(CancellationToken cancellationToken)
+        {
+            _logger.LogInformation("Service starting up");
+            await base.StartAsync(cancellationToken);
+        }
+
+        public override async Task StopAsync(CancellationToken cancellationToken)
+        {
+            _logger.LogInformation("Service stopping");
+            await base.StopAsync(cancellationToken);
         }
     }
 }

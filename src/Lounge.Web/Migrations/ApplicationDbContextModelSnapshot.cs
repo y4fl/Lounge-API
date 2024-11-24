@@ -48,7 +48,7 @@ namespace Lounge.Web.Migrations
                     b.Property<int>("Season")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasDefaultValue(12);
+                        .HasDefaultValue(5);
 
                     b.HasKey("Id");
 
@@ -405,7 +405,7 @@ namespace Lounge.Web.Migrations
                     b.Property<int>("Season")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasDefaultValue(12);
+                        .HasDefaultValue(5);
 
                     b.HasKey("Id");
 
@@ -439,7 +439,7 @@ namespace Lounge.Web.Migrations
                     b.Property<int>("Season")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasDefaultValue(12);
+                        .HasDefaultValue(5);
 
                     b.HasKey("Id");
 
@@ -467,7 +467,7 @@ namespace Lounge.Web.Migrations
                     b.Property<bool>("IsHidden")
                         .HasColumnType("bit");
 
-                    b.Property<int>("MKCId")
+                    b.Property<int?>("MKCId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -506,7 +506,8 @@ namespace Lounge.Web.Migrations
                         .HasFilter("[DiscordId] IS NOT NULL");
 
                     b.HasIndex("MKCId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[MKCId] IS NOT NULL");
 
                     b.HasIndex("NameChangeRequestedOn");
 
@@ -524,7 +525,7 @@ namespace Lounge.Web.Migrations
                     b.Property<int>("Season")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasDefaultValue(12);
+                        .HasDefaultValue(5);
 
                     b.Property<int?>("MaxMmr")
                         .HasColumnType("int");
@@ -568,7 +569,7 @@ namespace Lounge.Web.Migrations
                     b.Property<int>("Season")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasDefaultValue(12);
+                        .HasDefaultValue(5);
 
                     b.Property<string>("TableMessageId")
                         .HasColumnType("nvarchar(max)");
@@ -611,7 +612,13 @@ namespace Lounge.Web.Migrations
                     b.Property<int?>("PrevMmr")
                         .HasColumnType("int");
 
-                    b.Property<int>("Score")
+                    b.Property<int>("Score1")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Score2")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Score3")
                         .HasColumnType("int");
 
                     b.Property<int>("Team")

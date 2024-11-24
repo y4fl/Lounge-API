@@ -144,7 +144,7 @@ namespace Lounge.Web.Controllers
             int season,
             LeaderboardSortOrder sortBy = LeaderboardSortOrder.Mmr,
             int skip = 0,
-            int pageSize = 50,
+            int pageSize = 25,
             string? search = null,
             string? country = null,
             int? minMmr = null,
@@ -155,11 +155,11 @@ namespace Lounge.Web.Controllers
             if (pageSize < 0)
                 return BadRequest("pageSize must be non-negative");
 
-            if (pageSize > 100)
-                pageSize = 100;
+            if (pageSize > 50)
+                pageSize = 50;
 
             if (pageSize == 0)
-                pageSize = 50;
+                pageSize = 25;
 
             var playerStatsEnumerable = _playerStatCache.GetAllStats(season, sortBy).AsEnumerable();
             if (search != null)
@@ -450,15 +450,14 @@ namespace Lounge.Web.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<ActionResult<PlayerViewModel>> Create(string name, int mkcId, int? mmr, string? discordId = null)
+        public async Task<ActionResult<PlayerViewModel>> Create(string name, int? mkcId, int? mmr, string? discordId = null)
         {
             var season = _loungeSettingsService.CurrentSeason;
 
-            var registryId = await _mkcRegistryApi.GetRegistryIdAsync(mkcId);
-            if (registryId is null)
-                return BadRequest("User is not registered");
+            var registryId = mkcId == null ? null : await _mkcRegistryApi.GetRegistryIdAsync(mkcId.Value);
 
-            var registryData = await _mkcRegistryApi.GetPlayerRegistryDataAsync(registryId.Value);
+
+            var registryData = registryId == null ? null : await _mkcRegistryApi.GetPlayerRegistryDataAsync(registryId.Value);
             var normalizedName = PlayerUtils.NormalizeName(name);
 
             Player player = new()
@@ -468,8 +467,8 @@ namespace Lounge.Web.Controllers
                 MKCId = mkcId,
                 DiscordId = discordId,
                 RegistryId = registryId,
-                CountryCode = registryData.CountryCode,
-                SwitchFc = registryData.SwitchFc,
+                CountryCode = registryData?.CountryCode,
+                SwitchFc = registryData?.SwitchFc,
                 NameHistory = new List<NameChange> { new NameChange { Name = name, NormalizedName = normalizedName, ChangedOn = DateTime.UtcNow } }
             };
 
@@ -673,7 +672,7 @@ namespace Lounge.Web.Controllers
 
             var mkcId = player.MKCId;
 
-            var registryId = await _mkcRegistryApi.GetRegistryIdAsync(mkcId);
+            var registryId = mkcId == null ? null : await _mkcRegistryApi.GetRegistryIdAsync(mkcId.Value);
             player.RegistryId = registryId;
             if (registryId != null)
             {

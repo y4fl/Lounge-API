@@ -60,7 +60,7 @@ namespace Lounge.Web.Stats
                 .SelectMany(t =>
                     dbCache.TableScores[t.Id].Values
                         .GroupBy(s => s.Team)
-                        .Select(s => (TableId: t.Id, Team: s.Key, TotalScore: s.Sum(r => r.Score))))
+                        .Select(s => (TableId: t.Id, Team: s.Key, TotalScore: s.Sum(r => r.Score1 + r.Score2 + r.Score3))))
                 .OrderByDescending(t => t.TotalScore)
                 .Take(10)
                 .Select(record =>

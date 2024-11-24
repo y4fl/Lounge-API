@@ -1,6 +1,8 @@
-
+*.Production.json
 *.user
 [Bb]in/
 [Oo]bj/
 .vs/
 **/wwwroot/lib/
+__azurite_*
+__blobstorage__

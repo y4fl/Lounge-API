@@ -16,6 +16,7 @@ namespace Lounge.Web.Data.Entities
         public string? TableMessageId { get; set; }
         public string? UpdateMessageId { get; set; }
         public string? AuthorId { get; set; }
+     
 
         public ICollection<TableScore> Scores { get; set; } = default!;
 

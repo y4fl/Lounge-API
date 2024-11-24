@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -50,10 +51,10 @@ namespace Lounge.Web.Controllers
 
             var tableScores = await _context.TableScores
                 .Where(s => s.TableId == id)
-                .Select(s => new { s.Team, s.Score, s.Player.Name, s.Player.CountryCode })
+                .Select(s => new { s.Team, Score = new List<int> { s.Score1, s.Score2, s.Score3 }, s.Player.Name, s.Player.CountryCode })
                 .ToListAsync();
 
-            var scores = new (string Player, string? CountryCode, int Score)[table.NumTeams][];
+            var scores = new (string Player, string? CountryCode, List<int> Score)[table.NumTeams][];
             for (int i = 0; i < table.NumTeams; i++)
             {
                 scores[i] = tableScores
@@ -62,7 +63,7 @@ namespace Lounge.Web.Controllers
                     .ToArray();
             }
 
-            var url = TableUtils.BuildUrl(table.Tier, scores);
+            var url = TableUtils.BuildUrl(table.Tier, scores, table.CreatedOn);
             var tableImage = await TableUtils.GetImageDataAsync(url);
             try
             {

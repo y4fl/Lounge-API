@@ -47,6 +47,7 @@ namespace Lounge.Web.Data
             modelBuilder.Entity<Player>()
                 .HasIndex(p => p.DiscordId)
                 .IsUnique();
+               
 
             modelBuilder.Entity<Player>()
                 .HasIndex(p => p.NormalizedName)

@@ -87,8 +87,8 @@ namespace Lounge.Web.Stats
                     {
                         var multiplier = tableScore.Multiplier * formatMultiplier;
                         var mmrDelta = tableScore.NewMmr!.Value - tableScore.PrevMmr!.Value;
-                        var partnerScores = tableScores.Where(s => s.Team == tableScore.Team && s.PlayerId != tableScore.PlayerId).Select(s => s.Score).ToList();
-                        var playerEventData = new PlayerEventData(tableScore.TableId, tableScore.Score, tableScore.Multiplier, mmrDelta, partnerScores, eventData);
+                        var partnerScores = tableScores.Where(s => s.Team == tableScore.Team && s.PlayerId != tableScore.PlayerId).Select(s => s.Score1 + s.Score2 + s.Score3).ToList();
+                        var playerEventData = new PlayerEventData(tableScore.TableId, tableScore.Score1 + tableScore.Score2 + tableScore.Score3, tableScore.Multiplier, mmrDelta, partnerScores, eventData);
                         playerEventsLookup[tableScore.PlayerId].Add(playerEventData);
                     }
                 }

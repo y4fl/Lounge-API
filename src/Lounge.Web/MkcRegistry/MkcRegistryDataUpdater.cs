@@ -39,7 +39,7 @@ namespace Lounge.Web.Stats
 
             foreach (var player in players)
             {
-                if (registryDataLookup.TryGetValue(player.MKCId, out var registryPlayerData))
+                if (player.MKCId is not null && registryDataLookup.TryGetValue(player.MKCId.Value, out var registryPlayerData))
                 {
                     if (player.RegistryId != registryPlayerData.RegistryId)
                         player.RegistryId = registryPlayerData.RegistryId;

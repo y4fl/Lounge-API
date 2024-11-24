@@ -6,7 +6,7 @@ namespace Lounge.Web.Stats
     public record PlayerLeaderboardData(
         int Id,
         string Name,
-        int MkcId,
+        int? MkcId,
         string? DiscordId,
         int? RegistryId,
         string? CountryCode,
@@ -33,7 +33,7 @@ namespace Lounge.Web.Stats
         public PlayerLeaderboardData(
             int Id,
             string Name,
-            int MkcId,
+            int? MkcId,
             string? DiscordId,
             int? RegistryId,
             string? CountryCode,
