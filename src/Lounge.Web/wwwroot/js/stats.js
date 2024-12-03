@@ -1,29 +1,39 @@
 const chartSeasonConfig = {
   Seasons: {
-    4: {
+    1: {
       Ranks: {
-        "Iron 1": 0,
-        "Iron 2": 2000,
-        Bronze: 4000,
-        Silver: 5500,
-        Gold: 7000,
-        Platinum: 8500,
-        Sapphire: 10000,
-        Diamond: 11500,
-        Master: 13000,
-        Grandmaster: 14500,
+        "Bronze": 0,
+        "Silver": 1500,
+        "Gold": 3500,
+        "Platinum": 5500,
+        "Diamond": 8000,
+        "Master": 10000,
+        "Grandmaster": 12000
       },
-      RecordsTierOrder: ["X", "S", "A", "AB", "B", "C", "D", "E", "F"],
+      RecordsTierOrder: ["ALL", "A", "B"],
       DivisionsToTier: {
-        X: ["Diamond", "Master"],
-        S: ["Sapphire", "Diamond", "Master"],
-        A: ["Platinum", "Sapphire", "Diamond", "Master"],
-        AB: ["Gold", "Platinum"],
-        B: ["Gold"],
-        C: ["Silver"],
-        D: ["Bronze"],
-        E: ["Iron 2", "Bronze", "Placement"],
-        F: ["Iron 1", "Iron 2"],
+        ALL: ["Bronze", "Silver", "Gold", "Platinum", "Diamond", "Master", "Grandmaster"],
+        A: ["Gold", "Platinum", "Diamond", "Master", "Grandmaster"],
+        B: ["Bronze", "Silver", "Gold"],
+      },
+        },
+    2: {
+      Ranks: {
+       "Bronze": 0,
+       "Silver": 1500,
+       "Gold": 3000,
+       "Platinum": 5000,
+       "Emerald": 7000,
+       "Diamond": 9000,
+       "Master": 11000,
+       "Grandmaster": 13000
+      },
+      RecordsTierOrder: ["S", "A", "B", "ALL"],
+      DivisionsToTier: {
+        S: ["Platinum", "Emerald", "Diamond", "Master", "Grandmaster"],
+        A: ["Gold", "Platinum", "Emerald", "Diamond", "Master", "Grandmaster"],
+        B: ["Bronze", "Silver", "Gold"],
+        ALL: ["Bronze", "Silver", "Gold", "Platinum", "Emerald", "Diamond", "Master", "Grandmaster"],
       },
     },
     5: {
@@ -516,6 +526,7 @@ const chartSeasonConfig = {
     Diamond: "#b9f2ff",
     Ruby: "#d51c5e",
     Sapphire: "#286cd3",
+    Emerald: "#3dc26d",
     Platinum: "#3fabb8",
     Gold: "#f1c232",
     Silver: "#cccccc",
@@ -892,7 +903,7 @@ function updateMogiFormatChart(data) {
             size: 16,
           },
           padding: 20,
-          text: "Number of Mogis per Format (No SQ)",
+          text: "Number of Mogis per Format",
         },
         tooltip: {
           enabled: false,

@@ -7,6 +7,7 @@
         Diamond,
         Ruby,
         Sapphire,
+        Emerald,
         Platinum,
         Gold,
         Silver,

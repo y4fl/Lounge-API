@@ -12,9 +12,9 @@ namespace Lounge.Web.Utils
 {
     public static class TableUtils
     {
-        private static readonly int[] caps = new[] { 85, 180, 180, 340, -1, 300 };
-        private static readonly int[] scalingFactors = new[] { 9500, 5100, 5100, 5000, -1, 4650 };
-        private static readonly double[] offsets = new[] { 2696.281, 1474.230, 1474.230, 1263.891, -1, 1344.151 };
+        private static readonly double[] caps = new[] { 85.714, 180, 180, 360, -1, 300 };
+        private static readonly int[] scalingFactors = new[] { 11500, 10900, 5100, 10500, -1, 4650 };
+        private static readonly double[] offsets = new[] { 3324.33, 3150.806, 1474.230, 3035.181, -1, 1344.151 };
 
         public static string BuildUrl(string tier, (string Player, string? CountryCode, List<int> Score)[][] scores, DateTime date)
         {
@@ -66,7 +66,7 @@ namespace Lounge.Web.Utils
             int[] places = GetPlaces(teamTotalScores);
             double[] averageMmrs = scores.Select(t => t.Average(s => s.CurrentMmr)).ToArray();
 
-            int cap = caps[playersPerTeam - 1];
+            double cap = caps[playersPerTeam - 1];
             int scalingFactor = scalingFactors[playersPerTeam - 1];
             double offset = offsets[playersPerTeam - 1];
 

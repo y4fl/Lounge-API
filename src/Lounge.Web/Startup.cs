@@ -141,7 +141,7 @@ namespace Lounge.Web
              
                 app.UseExceptionHandler("/error");
                 app.UseHsts();
-                app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "Lounge_API v1"));
+                // app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "Lounge_API v1"));
 
             }
 
