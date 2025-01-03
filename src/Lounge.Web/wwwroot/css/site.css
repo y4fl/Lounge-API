@@ -131,7 +131,7 @@ body {
 
 .table-dark > thead > tr > td,
 .table-dark > thead > tr > th {
-    background-color: #0a2d61;
+    background-color: #181818;
 }
 
 .table-dark > tbody > tr:nth-child(2n+1) > td,

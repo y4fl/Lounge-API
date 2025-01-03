@@ -17,24 +17,44 @@ const chartSeasonConfig = {
         B: ["Bronze", "Silver", "Gold"],
       },
         },
-    2: {
+        2: {
+            Ranks: {
+                "Bronze": 0,
+                "Silver": 1250,
+                "Gold": 2500,
+                "Platinum": 4000,
+                "Ruby": 6000,
+                "Diamond": 8500,
+                "Master": 11000,
+                "Grandmaster": 12000
+            },
+            RecordsTierOrder: ["S", "A", "B", "ALL"],
+            DivisionsToTier: {
+                S: ["Platinum", "Ruby", "Diamond", "Master", "Grandmaster"],
+                A: ["Gold", "Platinum", "Ruby", "Diamond", "Master", "Grandmaster"],
+                B: ["Bronze", "Silver", "Gold"],
+                ALL: ["Bronze", "Silver", "Gold", "Platinum", "Ruby", "Diamond", "Master", "Grandmaster"],
+            },
+        },
+    3: {
       Ranks: {
        "Bronze": 0,
-       "Silver": 1500,
-       "Gold": 3000,
-       "Platinum": 5000,
-       "Emerald": 7000,
-       "Diamond": 9000,
-       "Master": 11000,
-       "Grandmaster": 13000
-      },
-      RecordsTierOrder: ["S", "A", "B", "ALL"],
-      DivisionsToTier: {
-        S: ["Platinum", "Emerald", "Diamond", "Master", "Grandmaster"],
-        A: ["Gold", "Platinum", "Emerald", "Diamond", "Master", "Grandmaster"],
-        B: ["Bronze", "Silver", "Gold"],
-        ALL: ["Bronze", "Silver", "Gold", "Platinum", "Emerald", "Diamond", "Master", "Grandmaster"],
-      },
+       "Silver": 1250,
+       "Gold": 2500,
+       "Platinum": 4000,
+       "Sapphire": 6000,
+       "Diamond": 8000,
+       "Master": 10000,
+       "Grandmaster": 11000
+            },
+            RecordsTierOrder: ["S", "A", "B", "C", "ALL"],
+            DivisionsToTier: {
+                S: ["Platinum", "Sapphire", "Diamond", "Master", "Grandmaster"],
+                A: ["Gold", "Platinum", "Sapphire", "Diamond", "Master", "Grandmaster"],
+                B: ["Silver", "Gold", "Platinum"],
+                C: ["Bronze", "Silver", "Gold"], 
+                ALL: ["Bronze", "Silver", "Gold", "Platinum", "Sapphire", "Diamond", "Master", "Grandmaster"],
+            },
     },
     5: {
       Ranks: {
