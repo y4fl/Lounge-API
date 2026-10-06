@@ -35,7 +35,7 @@ namespace Lounge.Web.Stats
         {
             var dict = seasonTables
                 .GroupBy(t => t.Tier)
-                .Where(t => t.Key != "SQ")
+                // .Where(t => t.Key != "SQ")
                 .ToDictionary(
                     s => s.Key,
                     s => GetTierRecords(s, dbCache));
