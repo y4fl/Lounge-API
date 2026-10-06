@@ -22,7 +22,7 @@ namespace Lounge.Web.Stats
         public async Task<DetailedRegistryData> GetPlayerRegistryDataAsync(int registryId)
         {
             var client = _httpClientFactory.CreateClient("WithRedirects");
-            var url = $"https://www.mariokartcentral.com/mkc/api/registry/players/{registryId}";
+            var url = $"https://www.mkcentral.com/mkc/api/registry/players/{registryId}";
             var resp = await client.GetAsync(url);
             if (resp.StatusCode == HttpStatusCode.OK)
             {

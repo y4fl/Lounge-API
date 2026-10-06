@@ -20,13 +20,13 @@
             <ul class="navbar-nav">
                 @foreach (var season in LoungeSettingsService.ValidSeasons)
                 {
-                                <li class="nav-item">
-                                    <a class="nav-link @(season == Model.Season ? "active" : "")" asp-page="Stats" asp-route-season="@season">@Localizer["Season"] @season</a>
-                                </li>
+                    <li class="nav-item">
+                        <a class="nav-link @(season == Model.Season ? "active" : "")" asp-page="Stats" asp-route-season="@season">@Localizer["Season"] @season</a>
+                    </li>
 
                 }
 
-   </ul>
+            </ul>
         </div>
     </div>
 </div>
@@ -66,14 +66,14 @@
             <dt>@Localizer["Median MMR"]</dt>
             <dd id="median-mmr"></dd>
         </div>
-    </dl>  
-</div>  
+    </dl>
+</div>
 
 <h1 class="m-4 text-center">@Localizer["Country Data"]</h1>
 
 <div class="row m-2">
     <canvas id="statPopulationCountryChartBody" class="col-lg-6 col-md-12 col-sm-12 col-xs-12"></canvas>
-    <div class="table-responsive table-sm my-auto pt-2 col-lg-6 col-md-12 col-sm-12 col-xs-12" >
+    <div class="table-responsive table-sm my-auto pt-2 col-lg-6 col-md-12 col-sm-12 col-xs-12">
         <table id="country-population-table" class="table table-striped table-dark text-center">
             <thead>
                 <tr>
@@ -94,7 +94,7 @@
 
 <div class="row m-2">
     <canvas id="statMogiFormatChartBody" class="col-lg-6 col-md-12 col-sm-12 col-xs-12"></canvas>
-    <div class="table-responsive my-auto pt-2 col-lg-6 col-md-12 col-sm-12 col-xs-12" >
+    <div class="table-responsive my-auto pt-2 col-lg-6 col-md-12 col-sm-12 col-xs-12">
         <table id="mogi-format-table" class="table table-striped table-dark text-center">
             <thead>
                 <tr>
@@ -110,34 +110,34 @@
 <canvas class="m-2" id="statMogiActivityChartBody"></canvas>
 
 <div class="row m-2">
-    <div class="table-responsive table-sm my-auto col-lg-6 col-md-6 col-sm-6 col-xs-12" >
+    <div class="table-responsive table-sm my-auto col-lg-6 col-md-6 col-sm-6 col-xs-12">
         <table id="mogi-tier-table" class="table table-striped table-dark text-center">
             <thead>
                 <tr>
-                    <th>@Localizer["tier"]</th>
-                    <th>@Localizer["mogis"]</th>
-                    <th>@Localizer["% of mogis"]</th>
+                    <th>@Localizer["Tier"]</th>
+                    <th>@Localizer["Mogis"]</th>
+                    <th>@Localizer["% of Mogis"]</th>
                 </tr>
             </thead>
         </table>
     </div>
-    <div class="table-responsive table-sm my-auto col-lg-6 col-md-6 col-sm-6 col-xs-12" >
+    <div class="table-responsive table-sm my-auto col-lg-6 col-md-6 col-sm-6 col-xs-12">
         <dl class="row col text-center" style="overflow: hidden;">
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                <dt>@Localizer["length of season (days)"]</dt>
+                <dt>@Localizer["Length of Season (Days)"]</dt>
                 <dd id="days-in-season"></dd>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                <dt>@Localizer["average mogis per day"]</dt>
+                <dt>@Localizer["Average Mogis Per Day"]</dt>
                 <dd id="average-mogis-per-day"></dd>
             </div>
-        </dl> 
+        </dl>
         <table id="mogi-weekday-table" class="table table-striped table-dark text-center">
             <thead>
                 <tr>
-                    <th>@Localizer["day of week"]</th>
-                    <th>@Localizer["mogis"]</th>
-                    <th>@Localizer["% of mogis"]</th>
+                    <th>@Localizer["Day of Week"]</th>
+                    <th>@Localizer["Mogis"]</th>
+                    <th>@Localizer["% of Mogis"]</th>
                 </tr>
             </thead>
         </table>
@@ -145,28 +145,28 @@
 </div>
 
 @section Scripts
-    {
-                            <script src="~/lib/jquery/jquery.min.js"></script>
-                            <script src="~/lib/chartjs/chart.min.js"></script>
-                            <script src="~/js/stats.js"></script>
-                            <script>
-                                function updatePage(data) {
-                                    updateStatsChart(data);
-                                    updateStats(data);
-                                    updatePopulationCountryChart(data);
-                                    updateOverallCountryChart(data, @Model.Season);
-                                    updateTopCountryChart(data, @Model.Season);
-                                    updateMogiFormatChart(data);
-                                    updateMogiActivityChart(data, @Model.Season);
-                                    updateMogiTables(data, @Model.Season);
-                                }
+{
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/lib/chartjs/chart.min.js"></script>
+    <script src="~/js/stats.js"></script>
+    <script>
+        function updatePage(data) {
+            updateStatsChart(data);
+            updateStats(data);
+            updatePopulationCountryChart(data);
+            updateOverallCountryChart(data, @Model.Season);
+            updateTopCountryChart(data, @Model.Season);
+            updateMogiFormatChart(data);
+            updateMogiActivityChart(data, @Model.Season);
+            updateMogiTables(data, @Model.Season);
+        }
 
-                                const url = `/api/player/stats?season=${@Model.Season}`;
-                                fetch(url)
-                                    .then((response) => response.json())
-                                    .then((data) => updatePage(data))
-                                    .catch((error) => {
-                                        console.log(error);
-                                });
-                            </script>
-    }
+        const url = `/api/player/stats?season=${@Model.Season}`;
+        fetch(url)
+            .then((response) => response.json())
+            .then((data) => updatePage(data))
+            .catch((error) => {
+                console.log(error);
+            });
+    </script>
+}

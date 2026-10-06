@@ -55,7 +55,28 @@ const chartSeasonConfig = {
                 C: ["Bronze", "Silver", "Gold"], 
                 ALL: ["Bronze", "Silver", "Gold", "Platinum", "Sapphire", "Diamond", "Master", "Grandmaster"],
             },
-    },
+        },
+        4: {
+            Ranks: {
+                "Bronze": 0,
+                "Silver": 1250,
+                "Gold": 2500,
+                "Platinum": 3750,
+                "Sapphire": 5000,
+                "Emerald": 6500,
+                "Diamond": 8000,
+                "Master": 10000,
+                "Grandmaster": 11500
+            },
+            RecordsTierOrder: ["S", "A", "B", "C", "ALL"],
+            DivisionsToTier: {
+                S: ["Platinum", "Sapphire", "Emerald", "Diamond", "Master", "Grandmaster"],
+                A: ["Gold", "Platinum", "Sapphire", "Emerald", "Diamond", "Master", "Grandmaster"],
+                B: ["Silver", "Gold", "Platinum"],
+                C: ["Bronze", "Silver", "Gold"],
+                ALL: ["Bronze", "Silver", "Gold", "Platinum", "Sapphire", "Emerald", "Diamond", "Master", "Grandmaster"],
+            },
+        },
     5: {
       Ranks: {
         "Iron 1": 0,

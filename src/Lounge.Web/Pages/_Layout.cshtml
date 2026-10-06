@@ -15,7 +15,7 @@
             <div class="container">
                 <div style="display: flex">
                     @await Html.PartialAsync("_SelectLanguagePartial")
-                    <a class="navbar-brand" asp-page="Leaderboard">@Localizer["MK8DX 150cc Lounge"]</a>
+                    <a class="navbar-brand" asp-page="Leaderboard">@Localizer["MK7 Lounge"]</a>
                 </div>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar" aria-controls="navbarSupportedContent"
                             aria-expanded="false" aria-label="Toggle navigation">
@@ -24,19 +24,25 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between" id="mainNavbar">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link" asp-page="Leaderboard">@Localizer["Leaderboard"]</a>
+                            <a class="nav-link" asp-page="leaderboard">@Localizer["Leaderboard"]</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-page="Records">@Localizer["Records"]</a>
+                            <a class="nav-link" asp-page="records">@Localizer["Records"]</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-page="Stats">@Localizer["Stats"]</a>
+                            <a class="nav-link" asp-page="stats">@Localizer["Stats"]</a>
+                        </li>
+                           @* <li class="nav-item">
+                               <a class="nav-link" asp-page="resources">@Localizer["Resources"]</a>
+                           </li>
+                           <li class="nav-item">
+                               <a class="nav-link" asp-page="tournaments">@Localizer["Tournaments"]</a>
+                           </li> *@
+                        <li class="nav-item">
+                            <a class="nav-link" href="https://discord.gg/aFyFtUceWG">@Localizer["Discord Invite"]</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="https://discord.gg/8MrYNC5hfg">@Localizer["Discord Invite"]</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="https://docs.google.com/document/d/1YgV59uk6bYOqQKF23pYN6nndfko-7gT5ephvaamGa8E/edit?usp=sharing">@Localizer["Rules"]</a>
+                            <a class="nav-link" href="https://docs.google.com/document/d/1YgV59uk6bYOqQKF23pYN6nndfko-7gT5ephvaamGa8E/edit?usp=sharing">@Localizer["Lounge Rules"]</a>
                         </li>
                     </ul>
                 </div>
@@ -51,7 +57,7 @@
 
     <footer class="border-top footer bg-dark">
         <div class="container">
-            &copy; 2022 - Lounge
+            &copy; 2026 - Mario Kart 7 Online / Pretendo Lounge
         </div>
     </footer>
     <script src="~/lib/jquery/jquery.min.js"></script>

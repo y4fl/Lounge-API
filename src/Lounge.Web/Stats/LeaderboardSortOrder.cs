@@ -15,7 +15,7 @@ namespace Lounge.Web.Stats
         [Display(Name = "Events Played")]
         EventsPlayed,
 
-        [Display(Name = "Average Score")]
+        [Display(Name = "Average Score (No SQ)")]
         AverageScoreNoSQ,
 
         [Display(Name = "Win Rate")]
@@ -27,7 +27,7 @@ namespace Lounge.Web.Stats
         [Display(Name = "Gain/Loss (Last 10)")]
         GainLast10,
 
-        [Display(Name = "Average Score (Last 10)")]
+        [Display(Name = "Avg. Score (No SQ Last 10)")]
         AverageScoreNoSQLast10
     }
 }

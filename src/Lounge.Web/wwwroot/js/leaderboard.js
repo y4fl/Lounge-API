@@ -29,7 +29,7 @@ function refreshLeaderboard(resetPage = true) {
     var queryParams = [];
     queryParams.push(`season=${season}`);
     if (page > 1) queryParams.push(`skip=${(page - 1) * pageSize}`);
-    if (pageSize !== 25) queryParams.push(`pageSize=${pageSize}`);
+    if (pageSize !== 50) queryParams.push(`pageSize=${pageSize}`);
     if (currentSortBy !== "Mmr") queryParams.push(`sortBy=${currentSortBy}`);
     if (currentNameFilter) queryParams.push(`search=${currentNameFilter}`);
     if (currentCountryFilter) queryParams.push(`country=${currentCountryFilter}`);

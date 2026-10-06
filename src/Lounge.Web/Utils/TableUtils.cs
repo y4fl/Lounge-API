@@ -12,7 +12,7 @@ namespace Lounge.Web.Utils
 {
     public static class TableUtils
     {
-        private static readonly double[] caps = new[] { 85.714, 180, 180, 360, -1, 300 };
+        private static readonly double[] caps = new[] { 85.714, 180, 180, 300, -1, 300 };
         private static readonly int[] scalingFactors = new[] { 11500, 10900, 5100, 10500, -1, 4650 };
         private static readonly double[] offsets = new[] { 3324.33, 3150.806, 1474.230, 3035.181, -1, 1344.151 };
 
